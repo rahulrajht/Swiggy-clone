@@ -1,0 +1,28 @@
+@import '../node_modules/slick-carousel/slick/slick.css';
+@import '../node_modules/slick-carousel/slick/slick-theme.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* src/index.css */
+
+/* src/index.css */
+
+.slick-prev, .slick-next {
+  background-color: white;
+  color: black;
+}
+
+.slick-prev:hover, .slick-next:hover {
+    background-color: white;
+    color: black;
+}
+
+.suggestion {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.suggestion::after {
+    border-bottom: 0.5px solid black;
+}
