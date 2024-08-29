@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping , faUser, faSearch, faChevronDown , faQuestionCircle , faGifts} from '@fortawesome/free-solid-svg-icons';
 export default function Nav() {
   return (
-    <div className="flex justify-around w-full h-[80px] shadow-md items-center px-8">
+    <div className="flex justify-around w-full h-[80px] items-center px-8 sticky top-0 p-4 shadow-md">
       <ul className="flex w-3/4 items-center">
         <li className="mt-2 p-2">
           <img className="w-[80px] ml-4" src="https://1000logos.net/wp-content/uploads/2021/05/Swiggy-emblem.png" />
