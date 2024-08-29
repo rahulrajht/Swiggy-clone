@@ -13,7 +13,6 @@ import { SvgIcon } from '@mui/material';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-import VerticalStepperWithTypography from "./Steper";
 import { Box, Stepper, Step, StepLabel, Typography, styled, Paper } from '@mui/material';
 import Carousel from "./Carousel";
 import ItemList from "./ItemList";
