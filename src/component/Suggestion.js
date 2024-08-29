@@ -1,6 +1,5 @@
 import Carousel from "./Carousel";
-import React , {useEffect , useState} from 'react';
-import axios from 'axios';
+import React from 'react';
 import { Link } from "react-router-dom";
 import useFetch from "../utils/data";
 import SkeletonUI from "./Skleton";

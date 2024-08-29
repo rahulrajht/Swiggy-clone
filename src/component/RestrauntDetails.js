@@ -7,13 +7,12 @@ import Box from '@mui/material/Box';
 import React, { useState } from 'react';
 import { CardContent, Typography } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBicycle, faGift, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faBicycle, faStar } from '@fortawesome/free-solid-svg-icons';
 import { orange } from "@mui/material/colors";
-import { SvgIcon } from '@mui/material';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-import { Box, Stepper, Step, StepLabel, Typography, styled, Paper } from '@mui/material';
+import { Box, Stepper, Step, StepLabel, Typography, styled } from '@mui/material';
 import Carousel from "./Carousel";
 import ItemList from "./ItemList";
 
