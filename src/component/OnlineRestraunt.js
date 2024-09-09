@@ -6,8 +6,6 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 export default function OnlineRestraunt() {
     const { data, loading, error } = useFetch(process.env.REACT_APP_SWIGGY_API);
     const onlineRestraunt = data?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants;
-    console.log(data);
-
 
     return (
         <div className="mt-8">

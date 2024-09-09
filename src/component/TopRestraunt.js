@@ -35,7 +35,7 @@ export  const renderImageItem = (item) => {
 export default function TopRestraunt () {
     const { data, loading, error } = useFetch(process.env.REACT_APP_SWIGGY_API);
     const topRestraunt = data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants;
-    console.log(topRestraunt);
+    
     return (
         <div>
             <h2 className="font-bold text-xl mt-8">Top restaurant chains in Bangalore</h2>

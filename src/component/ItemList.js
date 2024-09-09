@@ -6,14 +6,19 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGift, faStar } from '@fortawesome/free-solid-svg-icons';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../utils/cartSlice';
 
 
 export default function ItemList({item , index}) {
     const itemCards = item?.card?.card?.itemCards;
     const type = item?.card?.card?.['@type'].split(".")[6] === 'ItemCategory';
-    const namee = 'NestedItemCategory';
-    console.log("items",item?.card?.card)
-    console.log(itemCards && itemCards[0]?.card)
+    const dispatch = useDispatch();
+
+
+    const handleAdd = (item)=>{
+        dispatch(addToCart(item))
+    }
 
   return (
     <div className='mt-8'>
@@ -38,7 +43,7 @@ export default function ItemList({item , index}) {
                             </div>
                             <div className='shadow-md  md:shadow-lg rounded-xl grid place-items-center relative'>
                                 <img className='object-cover rounded-xl h-[180px] sm:h-[180px] md:h-[200px]' src={process.env.REACT_APP_API_URL + item?.card?.info?.imageId}/>
-                            <button className='cursor-pointer transition-colors duration-500 hover:bg-gray-200 border-none text-[green] bg-white bottom-[-15px]  border-2 rounded-xl px-8 py-1 absolute'> Add </button>
+                            <button onClick={()=>handleAdd(item)} className='cursor-pointer transition-colors duration-500 hover:bg-gray-200 border-none text-[green] bg-white bottom-[-15px]  border-2 rounded-xl px-8 py-1 absolute'> Add </button>
                             </div>
                         </div>
                         ))

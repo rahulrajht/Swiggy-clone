@@ -36,13 +36,9 @@ export default function Collections () {
 
     async function fetchCollectionsLists() {
         const result = await axios.get(url+params.id+"&tags=layout_FestiveEvent7&sortBy=&filters=&type=rcv2&offset=0&page_type=null");
-        console.log(result?.data?.data?.cards)
         setFetchResults(result?.data?.data?.cards)
         setFilters(result?.data?.data?.cards[0]?.card?.card?.facetList[2].facetInfo)
         setCollections(result?.data?.data?.cards.slice(2))
-        console.log(result?.data?.data?.cards.slice(2))
-        // const nextData = await axios.post("https://www.swiggy.com/dapi/restaurants/list/update" , payload);
-        // console.log("next" , nextData)
     }
     
     return (

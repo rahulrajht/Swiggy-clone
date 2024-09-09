@@ -73,7 +73,6 @@ export default function RestrauntDetails() {
         if(items)
         restaurantLicenseInfo = item?.card?.card;
     });
-    console.log(restaurantLicenseInfo)
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
