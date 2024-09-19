@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import useFetch from "../utils/data";
 import SkeletonUI from "./Skleton";
+import { useDispatch } from "react-redux";
 
 const renderImageItem = (item) => (
     <Link to={item.action.link.split("/").slice(3).join("/")}>
@@ -12,8 +13,7 @@ const renderImageItem = (item) => (
     </Link>
 );
 
-export default function Suggestion () {
-    const { data, loading, error } = useFetch(process.env.REACT_APP_SWIGGY_API);
+export default function Suggestion ({data, loading}) {
     const slides = data?.data?.cards[0]?.card?.card?.imageGridCards?.info;
 
     return (

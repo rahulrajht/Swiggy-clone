@@ -20,7 +20,7 @@
 
 .suggestion, .container {
     max-width: 1380px;
-    margin: 0 auto;
+    margin: 108px auto 0 auto;
 }
 
 /* .slick-next {

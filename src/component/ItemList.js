@@ -7,7 +7,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGift, faStar } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
-import { addToCart } from '../utils/cartSlice';
+import { addToCart } from '../store/slices/cartSlice';
 
 
 export default function ItemList({item , index}) {

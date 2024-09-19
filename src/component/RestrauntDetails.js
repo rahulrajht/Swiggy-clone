@@ -1,5 +1,4 @@
 import { useParams } from "react-router-dom";
-import useFetch from '../utils/data';
 import Card from '@mui/material/Card';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -15,6 +14,9 @@ import StepLabel from '@mui/material/StepLabel';
 import { Box, Stepper, Step, StepLabel, Typography, styled } from '@mui/material';
 import Carousel from "./Carousel";
 import ItemList from "./ItemList";
+import SkeletonUI from "./Skleton";
+import useFetchData from "../utils/data";
+import { useSelector } from "react-redux";
 
 const DotStepIcon = styled('div')(({ theme }) => ({
     width: 10,
@@ -60,13 +62,26 @@ const renderItem = (item) => {
 }
 export default function RestrauntDetails() {
     const params = useParams();
-    const { data, loading, error } = useFetch(process.env.REACT_APP_RESTRAUNT_DETAILS_API + params.id.split("-")[0]);
-    const onlineRestraunt = data?.data?.cards[2]?.card?.card?.info;
-    const tabs = data?.data?.cards[1].card.card.tabs;
-    const offers = data?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle?.offers;
+    const {isLoading} = useFetchData(process.env.REACT_APP_RESTRAUNT_DETAILS_API + params.id.split("-")[0], params.id.split("-")[0]);
+    
+    const restaurantItemDetails = useSelector((state)=> state.data.restaurantDetails);
+    const onlineRestraunt = restaurantItemDetails?.data?.cards[2]?.card?.card?.info;
+    const tabs = restaurantItemDetails?.data?.cards[1].card.card.tabs || [];
+    const offers = restaurantItemDetails?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle?.offers;
     const [value, setValue] = useState(0);
-    const restaurantDetails = data?.data?.cards[2].card.card.info;
-    const menuItems = data?.data?.cards[4]?.groupedCard?.cardGroupMap.REGULAR?.cards;
+    const restaurantDetails = restaurantItemDetails?.data?.cards[2].card.card.info;
+    const menuItems = restaurantItemDetails?.data?.cards[4]?.groupedCard?.cardGroupMap.REGULAR?.cards;
+
+    if (isLoading) {
+        return (
+            <>
+                <SkeletonUI count={4} />
+                <SkeletonUI count={4} />
+                <SkeletonUI count={4} />
+            </>
+        )
+    }
+
     let restaurantLicenseInfo;
     menuItems && menuItems?.forEach(item => {
         let items = item?.card?.card['@type'].split(".")[6] === 'RestaurantLicenseInfo';
@@ -76,8 +91,11 @@ export default function RestrauntDetails() {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+
+    
+    
     return (
-        <div className="mt-8 restraunt-details">
+        <div className="mt-[108px] restraunt-details">
             <div>
                 <span className="font-normal text-xs">Home / {onlineRestraunt && onlineRestraunt.city + " / " + onlineRestraunt.name}</span>
                 <h2 className="mt-8 font-bold text-2xl">{onlineRestraunt && onlineRestraunt.name}</h2>
@@ -86,7 +104,7 @@ export default function RestrauntDetails() {
                 <Box sx={{ width: '80%' }}>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                         <Tabs value={value} onChange={handleChange} >
-                            {!loading ? tabs.map((item, ind) => (
+                            {!isLoading ? tabs.map((item, ind) => (
                                 <Tab label={item.title} />
                             )) : null}
                         </Tabs>

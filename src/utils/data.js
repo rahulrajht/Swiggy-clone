@@ -1,36 +1,36 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchStart, fetchSuccess, fetchFailure, fetchRestaurantDetails } from '../store/slices/dataSlice';
 
-const useFetch = (url, method = 'GET', payload = null) => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const useFetchData = (url, payload) => {
+  const dispatch = useDispatch();
+  const { items, restaurantDetails, isLoading, error } = useSelector((state) => state.data);
 
   useEffect(() => {
     const fetchData = async () => {
+      dispatch(fetchStart());
       try {
-        let response;
-        if (method === 'POST' && payload) {
-          response = await axios.post(url, payload, {
-            headers: {
-              'Content-Type': 'application/json',
-            }
-          });
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (payload) {
+          dispatch(fetchRestaurantDetails(data));
         } else {
-          response = await axios.get(url);
+          dispatch(fetchSuccess(data));
         }
-        setData(response.data);
       } catch (err) {
-        setError(err.message || 'An error occurred');
-      } finally {
-        setLoading(false);
+        dispatch(fetchFailure(err.toString()));
       }
     };
 
-    fetchData();
-  }, [url, method, payload]);
+    if (payload) {
+      fetchData();
+    } else if (!payload && items.length === 0) {
+      fetchData();
+    }
+  }, [dispatch, url, payload, items.length, restaurantDetails.length]);
 
-  return { data, loading, error };
+  return { items, restaurantDetails, isLoading, error };
 };
 
-export default useFetch;
+export default useFetchData;
