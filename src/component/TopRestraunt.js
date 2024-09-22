@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { Link } from "react-router-dom";
 import SkeletonUI from "./Skleton";
+import { useSelector } from "react-redux";
 
 export  const renderImageItem = (item) => {
     const to = item && `${`restraunt/${item.info.id}`}  ${item.info.name} ${item.info.locality} ${item.info.areaName}`;
@@ -31,12 +32,13 @@ export  const renderImageItem = (item) => {
     </Link>
 };
 
-export default function TopRestraunt ({data, loading}) {
+export default function TopRestraunt ({loading}) {
+    const data = useSelector((store)=> store.data.items)
     const topRestraunt = data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants;
-    
+    const title = data?.data?.cards[1]?.card?.card?.header?.title
     return (
         <div>
-            <h2 className="font-bold text-xl mt-8">Top restaurant chains in Bangalore</h2>
+            <h2 className="font-bold text-xl mt-8">{title}</h2>
             {loading ? <SkeletonUI count={4}/> :
                 <Carousel slides={topRestraunt} imageURI={process.env.REACT_APP_TOP_API} renderItem={renderImageItem} slideToShow={4}/>
             }

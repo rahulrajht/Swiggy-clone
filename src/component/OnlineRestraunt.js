@@ -3,14 +3,17 @@ import useFetch from "../utils/data";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import SkeletonUI from "./Skleton";
+import { useSelector } from "react-redux";
 
-export default function OnlineRestraunt({data, loading}) {
+export default function OnlineRestraunt({loading}) {
+    const data = useSelector(store=> store.data.items)
     const onlineRestraunt = data?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants;
+    const title = data?.data?.cards[2]?.card?.card?.title
 
     return (
         <div className="mt-8">
             <div>
-                <h2 className="font-bold text-xl ">Restaurants with online food delivery in Bangalore</h2>
+                <h2 className="font-bold text-xl ">{title}</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 w-full mt-8">
                 {loading ? <SkeletonUI count={4}/> : onlineRestraunt?.map((item) => (

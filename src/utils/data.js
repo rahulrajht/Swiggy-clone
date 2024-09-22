@@ -5,6 +5,7 @@ import { fetchStart, fetchSuccess, fetchFailure, fetchRestaurantDetails } from '
 const useFetchData = (url, payload) => {
   const dispatch = useDispatch();
   const { items, restaurantDetails, isLoading, error } = useSelector((state) => state.data);
+  const {lat ,lng } = useSelector((store)=> store.location.coord);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,8 +28,10 @@ const useFetchData = (url, payload) => {
       fetchData();
     } else if (!payload && items.length === 0) {
       fetchData();
+    } else if (lat && lng) {
+      fetchData();
     }
-  }, [dispatch, url, payload, items.length, restaurantDetails.length]);
+  }, [dispatch, url, payload, items.length, restaurantDetails.length, lat,lng]);
 
   return { items, restaurantDetails, isLoading, error };
 };
