@@ -3,10 +3,10 @@ import Card from '@mui/material/Card';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CardContent, Typography } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBicycle, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faArrowAltCircleLeft, faArrowAltCircleRight, faBicycle, faStar } from '@fortawesome/free-solid-svg-icons';
 import { orange } from "@mui/material/colors";
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -51,7 +51,7 @@ const renderItem = (item) => {
     return (
         <div className="flex px-2 py-1 border-2 rounded-xl h-[70px] ml-2 gap-2 cursor-pointer">
             <div className="flex p-2 h-[48px] w-[48px] ">
-                <img  className="object-cover" src={`https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_96,h_96/` + item?.info.offerLogo} />
+                <img className="object-cover" src={`https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_96,h_96/` + item?.info.offerLogo} />
             </div>
             <div>
                 <h3>{item?.info?.header} </h3>
@@ -60,17 +60,32 @@ const renderItem = (item) => {
         </div>
     )
 }
+
 export default function RestrauntDetails() {
     const params = useParams();
-    const {isLoading} = useFetchData(process.env.REACT_APP_RESTRAUNT_DETAILS_API + params.id.split("-")[0], params.id.split("-")[0]);
-    
-    const restaurantItemDetails = useSelector((state)=> state.data.restaurantDetails);
+    const { isLoading } = useFetchData(process.env.REACT_APP_RESTRAUNT_DETAILS_API + params.id.split("-")[0], params.id.split("-")[0]);
+
+    const restaurantItemDetails = useSelector((state) => state.data.restaurantDetails);
     const onlineRestraunt = restaurantItemDetails?.data?.cards[2]?.card?.card?.info;
     const tabs = restaurantItemDetails?.data?.cards[1].card.card.tabs || [];
     const offers = restaurantItemDetails?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle?.offers;
     const [value, setValue] = useState(0);
     const restaurantDetails = restaurantItemDetails?.data?.cards[2].card.card.info;
     const menuItems = restaurantItemDetails?.data?.cards[4]?.groupedCard?.cardGroupMap.REGULAR?.cards;
+    const topPick = menuItems && menuItems[1];
+    const [translateValue, setTranslateValue] = useState(0);
+    const [clicks, setClicks] = useState(0);
+    const [remain, setRemain] = useState(0);
+
+    useEffect(() => {
+        if (topPick) {
+            const length = topPick?.card?.card?.carousel.length;
+            const topPicksDivSW = (length * 400) + (16 * (length - 1));
+            const remain = topPicksDivSW - 1100;
+            const numbOfClicks = remain / 400;
+            setClicks(Math.floor(numbOfClicks));
+        }
+    }, [topPick])
 
     if (isLoading) {
         return (
@@ -83,17 +98,30 @@ export default function RestrauntDetails() {
     }
 
     let restaurantLicenseInfo;
+
     menuItems && menuItems?.forEach(item => {
         let items = item?.card?.card['@type'].split(".")[6] === 'RestaurantLicenseInfo';
-        if(items)
-        restaurantLicenseInfo = item?.card?.card;
+        if (items) restaurantLicenseInfo = item?.card?.card;
     });
+
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
 
-    
-    
+    const handleNext = () => {
+        if (remain < clicks) {
+            setTranslateValue((prev) => prev + 52);
+            setRemain((prev) => prev + 1);
+        }
+    }
+
+    const handlePrev = () => {
+        if (remain > 0) {
+            setRemain((prev) => prev - 1);
+            translateValue <= 0 ? "" : setTranslateValue((prev) => prev - 52);
+        }
+    }
+
     return (
         <div className="mt-[108px] restraunt-details">
             <div>
@@ -105,7 +133,7 @@ export default function RestrauntDetails() {
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                         <Tabs value={value} onChange={handleChange} >
                             {!isLoading ? tabs.map((item, ind) => (
-                                <Tab label={item.title} />
+                                <Tab key={ind} label={item.title} />
                             )) : null}
                         </Tabs>
                     </Box>
@@ -150,10 +178,33 @@ export default function RestrauntDetails() {
                 <h2 className="font-bold text-xl"> Deals for you</h2>
                 <Carousel slides={offers} renderItem={renderItem} slideToShow={3} />
             </div>
+
             <div className="mt-16">
                 <h2 className="my-16 text-center font-bold"> Menu </h2>
+                {topPick &&
+                    <div className="w-full m-auto overflow-hidden top-picks">
+                        <div className="mt-8 text-xl font-bold flex justify-between">
+                            <h1 className="mb-4">{topPick?.card?.card?.title}</h1>
+                            <div className="flex gap-2">
+                                <button disabled={!(remain > 0)}>
+                                    <FontAwesomeIcon color={`${(!remain > 0) ? 'gray' : 'black'}`} onClick={handlePrev} icon={faArrowAltCircleLeft} />
+                                </button>
+                                <button disabled={remain === clicks}>
+                                    <FontAwesomeIcon color={`${remain === clicks ? 'gray' : 'black'}`} onClick={handleNext} icon={faArrowAltCircleRight} />
+                                </button>
+                            </div>
+                        </div>
+                        <div style={{ translate: `-${translateValue}%` }} className="flex gap-4 w-full duration-500">
+                            {topPick?.card?.card?.carousel?.map((item) => (
+                                <div key={item.creativeId} className="min-w-[400px] relative h-[400px]">
+                                    <img className="w-full h-full" src={process.env.REACT_APP_TOP_PICKS_BANNER + item.creativeId} alt="" />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                }
                 {menuItems && menuItems.slice(2).map((item, i) => (
-                    <ItemList item={item} index={i}/>
+                    <ItemList key={i} item={item} index={i} />
                 ))}
             </div>
             <div className="bg-[#f1f1f6] h-[400px]">

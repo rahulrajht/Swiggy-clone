@@ -10,8 +10,9 @@ import { useDispatch } from 'react-redux';
 import { addToCart } from '../store/slices/cartSlice';
 
 
-export default function ItemList({item , index}) {
+export default function ItemList({item}) {
     const itemCards = item?.card?.card?.itemCards;
+
     const type = item?.card?.card?.['@type'].split(".")[6] === 'ItemCategory';
     const dispatch = useDispatch();
 
@@ -22,7 +23,7 @@ export default function ItemList({item , index}) {
 
   return (
     <div className='mt-8'>
-        {type ? 
+        { type &&
             <Accordion defaultExpanded={item?.card?.card?.title === 'Recommended' ? true : false}>
                 <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
@@ -34,7 +35,7 @@ export default function ItemList({item , index}) {
                 <AccordionDetails>
                 { itemCards && 
                     itemCards.map((item)=>(
-                        <div className='flex justify-around w-full pb-8 rounded-lg my-8 item-list border-b border-0.5 border-lightgray rounded-none last:border-b-0'>
+                        <div key={item?.card?.info?.id} className='flex justify-around w-full pb-8 rounded-lg my-8 item-list border-b border-0.5 border-lightgray rounded-none last:border-b-0'>
                             <div className='w-8/12'>
                                 <h2 className='font-bold text-lg'>{item?.card?.info?.name}</h2>
                                 <p className='font-[600] '>₹ {item?.card?.info?.price ? (item?.card?.info?.price / 100) : (item?.card?.info?.defaultPrice && ( item?.card?.info?.defaultPrice / 100 ) )} {item?.card?.info?.offerTags && <span className='text-xs text-[black] ml-2 '><FontAwesomeIcon icon={faGift}/> {item?.card?.info?.offerTags[0].title} {item?.card?.info?.offerTags[0].subTitle} </span>} </p>
@@ -50,10 +51,7 @@ export default function ItemList({item , index}) {
                 }
                 </AccordionDetails>
             </Accordion>
-        : <div>
-            <h2>{item && item?.card?.card?.title }</h2>
-        </div>    
-        }
+}
     </div>
   );
 }
