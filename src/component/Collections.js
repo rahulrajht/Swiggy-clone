@@ -39,7 +39,7 @@ export default function Collections () {
             <h2 className="text-xl font-bold mt-4">{fetchResults && fetchResults[0].card.card.restaurantCount} restaurants to explore</h2>
             <div className="flex mt-4">
             { collections.length >0 ? collections.map((item) => (
-                <Link key={item.card.card.info.id} className="w-[20rem] block">
+                <Link to={`/restraunt/${item.card.card.info.id}`} replace key={item.card.card.info.id} className="w-[20rem] block">
                     <div className="bg-white max-w-2xl pr-[32px] lg:max-w-7xl ">
                         <div className=" grid grid-cols-1 gap-x-6 gap-y-10 xl:gap-x-8 shadow-lg rounded restraunt-image " >
                             <div className=" aspect-h-1 aspect-w-1 w-full overflow-hidden rounded bg-gray-200 lg:aspect-none group-hover:opacity-75 h-[200px]">

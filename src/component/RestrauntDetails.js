@@ -79,7 +79,7 @@ export default function RestrauntDetails() {
 
     useEffect(() => {
         if (topPick) {
-            const length = topPick?.card?.card?.carousel.length;
+            const length = topPick?.card?.card?.carousel?.length;
             const topPicksDivSW = (length * 400) + (16 * (length - 1));
             const remain = topPicksDivSW - 1100;
             const numbOfClicks = remain / 400;
