@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import Collections from "./component/Collections"
 import { createBrowserRouter,RouterProvider } from "react-router-dom";
-import RestrauntDetails from './component/RestrauntDetails';
+
+const RestrauntDetails = lazy(()=> import('./component/RestrauntDetails'));
+const Collections = lazy(()=> import("./component/Collections"));
 
 const router = createBrowserRouter([
   {
@@ -12,11 +13,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/collections/:id",
-        element: <Collections />,
+        element: <Suspense fallback={<h1>loading ...</h1>}> <Collections /></Suspense>,
       },
       {
         path: "/restraunt/:id",
-        element: <RestrauntDetails />,
+        element: <Suspense fallback={<h1>loading ...</h1>}> <RestrauntDetails /> </Suspense>,
       },
     ]
   },
