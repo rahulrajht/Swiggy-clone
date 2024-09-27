@@ -20,7 +20,7 @@
 
 .suggestion, .container {
     max-width: 1380px;
-    margin: 0 auto;
+    margin: 108px auto 0 auto;
 }
 
 /* .slick-next {
@@ -69,4 +69,9 @@ html {
 .restraunt-details {
   max-width: 1100px;
   margin: auto;
+}
+
+.location {
+  border-bottom: 1px dashed gray;
+  border-spacing: 2px;
 }

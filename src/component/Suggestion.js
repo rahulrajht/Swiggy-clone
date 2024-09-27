@@ -1,9 +1,8 @@
 import Carousel from "./Carousel";
-import React , {useEffect , useState} from 'react';
-import axios from 'axios';
+import React from 'react';
 import { Link } from "react-router-dom";
-import useFetch from "../utils/data";
 import SkeletonUI from "./Skleton";
+import { useSelector } from "react-redux";
 
 const renderImageItem = (item) => (
     <Link to={item.action.link.split("/").slice(3).join("/")}>
@@ -13,10 +12,9 @@ const renderImageItem = (item) => (
     </Link>
 );
 
-export default function Suggestion () {
-    const { data, loading, error } = useFetch(process.env.REACT_APP_SWIGGY_API);
+export default function Suggestion ({loading}) {
+    const data = useSelector((store) => store.data.items);
     const slides = data?.data?.cards[0]?.card?.card?.imageGridCards?.info;
-
     return (
         <div className="ml-4 suggestion">
             <h2 className="font-bold text-xl mt-8">What's on your mind?</h2>

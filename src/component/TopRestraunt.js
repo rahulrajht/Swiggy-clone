@@ -3,8 +3,8 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { Link } from "react-router-dom";
-import useFetch from "../utils/data";
 import SkeletonUI from "./Skleton";
+import { useSelector } from "react-redux";
 
 export  const renderImageItem = (item) => {
     const to = item && `${`restraunt/${item.info.id}`}  ${item.info.name} ${item.info.locality} ${item.info.areaName}`;
@@ -17,7 +17,7 @@ export  const renderImageItem = (item) => {
                     src={process.env.REACT_APP_TOP_API+item.info.cloudinaryImageId}
                     className="h-full w-full object-cover object-center lg:h-full lg:w-full rounded"
                   />
-                      <div class="absolute offer bottom-0 bg-black bg-opacity-20 text-white text-l font-bold py-1 w-full px-2">
+                      <div className="absolute offer bottom-0 bg-black bg-opacity-20 text-white text-l font-bold py-1 w-full px-2">
                         {item?.info?.aggregatedDiscountInfoV3?.header === "ITEMS" ? item?.info?.aggregatedDiscountInfoV3?.header +" " +item?.info?.aggregatedDiscountInfoV3?.subHeader :item?.info?.aggregatedDiscountInfoV3?.header}
                         </div>
                 </div>
@@ -32,13 +32,13 @@ export  const renderImageItem = (item) => {
     </Link>
 };
 
-export default function TopRestraunt () {
-    const { data, loading, error } = useFetch(process.env.REACT_APP_SWIGGY_API);
+export default function TopRestraunt ({loading}) {
+    const data = useSelector((store)=> store.data.items)
     const topRestraunt = data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants;
-    console.log(topRestraunt);
+    const title = data?.data?.cards[1]?.card?.card?.header?.title
     return (
         <div>
-            <h2 className="font-bold text-xl mt-8">Top restaurant chains in Bangalore</h2>
+            <h2 className="font-bold text-xl mt-8">{title}</h2>
             {loading ? <SkeletonUI count={4}/> :
                 <Carousel slides={topRestraunt} imageURI={process.env.REACT_APP_TOP_API} renderItem={renderImageItem} slideToShow={4}/>
             }

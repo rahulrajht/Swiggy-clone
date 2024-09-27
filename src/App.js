@@ -1,28 +1,25 @@
 import React from 'react';
 import Nav from './component/Nav';
-import Suggestion from './component/Suggestion';
-import TopRestraunt from './component/TopRestraunt';
 import { Outlet , useLocation } from 'react-router-dom';
-import Layout from './component/Layout';
-import OnlineRestraunt from './component/OnlineRestraunt';
+import { Provider } from 'react-redux';
+import store from './store/store';
+import HomeScreen from './screen/HomeScreen';
 
 function App() {
   const location = useLocation();
 
   return (
+    <Provider store={store}>
     <div>
       <Nav />
-      <div className="container px-8 m-auto">
+      <div className="container px-8 ">
         {location.pathname === '/' && (
-          <>
-            <Suggestion />
-            <TopRestraunt />
-            <OnlineRestraunt />
-          </>
+          <HomeScreen />
         )}
         <Outlet />
       </div>
     </div>
+    </Provider>
   );
 }
 

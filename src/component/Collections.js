@@ -3,46 +3,25 @@ import {useEffect , useState} from 'react';
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faSort, faStar } from "@fortawesome/free-solid-svg-icons";
+import { useSelector } from "react-redux";
 
 export default function Collections () {
     const params = useParams();
     const [collections , setCollections ] = useState([]);
     const [filters , setFilters] = useState([]);
-    const [ fetchResults , setFetchResults ] = useState()
-    const url = "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9715987&lng=77.5945627&collection=";
-
-    const payload = {
-        "lat": 12.9715987,
-        "lng": 77.5945627,
-        "collection": "83673",
-        "tags": "layout_FestiveEvent7",
-        "sortBy": "",
-        "filters": "",
-        "type": "rcv2",
-        "nextOffset": "CJ9gEOMTKICo+Oi1h+3RcTCnGzgC",
-        "widgetOffset": {
-            "restaurantCountWidget": "",
-            "collectionV5RestaurantListWidget": "4",
-            "inlineFacetFilter": "",
-            "layout_FestiveEvent7_Flexipage_Themes1_StackedWidget": ""
-        },
-        "page_type": null,
-        "_csrf": "HiyNbbxyPvuK-Coi1p-d8_3NIf1Q580jPX3r0YWg"
-    }
+    const [ fetchResults , setFetchResults ] = useState();
+    const {lat ,lng } = useSelector((store)=> store.location.coord);
+    const url = `https://www.swiggy.com/dapi/restaurants/list/v5?lat=${lat}&lng=${lng}&collection=`;
 
     useEffect(() => {
      fetchCollectionsLists()
-    }, [])
+    }, [lat, lng])
 
     async function fetchCollectionsLists() {
         const result = await axios.get(url+params.id+"&tags=layout_FestiveEvent7&sortBy=&filters=&type=rcv2&offset=0&page_type=null");
-        console.log(result?.data?.data?.cards)
         setFetchResults(result?.data?.data?.cards)
         setFilters(result?.data?.data?.cards[0]?.card?.card?.facetList[2].facetInfo)
         setCollections(result?.data?.data?.cards.slice(2))
-        console.log(result?.data?.data?.cards.slice(2))
-        // const nextData = await axios.post("https://www.swiggy.com/dapi/restaurants/list/update" , payload);
-        // console.log("next" , nextData)
     }
     
     return (

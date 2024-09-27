@@ -4,10 +4,9 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGift, faHandPaper, faPercentage, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faGift, faStar } from '@fortawesome/free-solid-svg-icons';
 
 export default function AccordinItemList({ item }) {
-    console.log(item)
     return (
         <Accordion defaultExpanded={item?.card?.card?.title === 'Recommended' ? true : false}>
             <AccordionSummary
